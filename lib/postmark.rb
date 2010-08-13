@@ -103,6 +103,8 @@ module Postmark
       options["Cc"] = message['cc'].to_s unless message.cc.nil?
 
       options["Bcc"] = message['bcc'].to_s unless message.bcc.nil?
+      
+      options["Attachments"] = message['attachments'].to_s unless message.attachments.nil?
 
       if reply_to = message['reply-to']
         options["ReplyTo"] = reply_to.to_s
