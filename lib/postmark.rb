@@ -95,7 +95,6 @@ module Postmark
     protected
 
     def convert_tmail(message)
-      debugger
       options = { "From" => message['from'].to_s, "To" => message['to'].to_s, "Subject" => message.subject }
 
       headers = extract_headers(message)
