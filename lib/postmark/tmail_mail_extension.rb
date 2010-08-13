@@ -22,6 +22,15 @@ module TMail
       self["TAG"] = value
     end
 
+
+    def attachments
+      ((self["ATTACHMENT"].nil? || self["ATTACHMENT"].body.nil?) ? nil : JSON.parse(self["ATTACHMENT"].body))
+    end
+
+    def attachments=(value)
+      self["ATTACHMENT"] = value.to_json
+    end
+
     #
     # returs an String with just the html part of the body
     # or nil if there is not any html part
@@ -86,7 +95,7 @@ module TMail
           header = part["content-type"]
 
           if part.multipart?
-            puts "    --multipartt--"
+            puts "    --multipart--"
             part.parts.each_with_index do |part2, index2|
               puts "    part[#{index}][#{index2}]"
               puts "      content_type: #{part2.content_type}"

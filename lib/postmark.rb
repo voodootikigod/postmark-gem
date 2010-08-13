@@ -7,6 +7,7 @@ require 'postmark/bounce'
 require 'postmark/json'
 require 'postmark/http_client'
 
+
 module Postmark
 
   class InvalidApiKeyError < StandardError; end
@@ -75,7 +76,8 @@ module Postmark
     def send_through_postmark(message) #:nodoc:
       @retries = 0
       begin
-        HttpClient.post("email", Postmark::Json.encode(convert_tmail(message)))
+        data = Postmark::Json.encode(convert_tmail(message))
+        HttpClient.post("email", data)
       rescue Exception => e
         if @retries < max_retries
            @retries += 1
@@ -93,6 +95,7 @@ module Postmark
     protected
 
     def convert_tmail(message)
+      debugger
       options = { "From" => message['from'].to_s, "To" => message['to'].to_s, "Subject" => message.subject }
 
       headers = extract_headers(message)
@@ -104,7 +107,7 @@ module Postmark
 
       options["Bcc"] = message['bcc'].to_s unless message.bcc.nil?
       
-      options["Attachments"] = message['attachments'].to_s unless message.attachments.nil?
+      options["Attachments"] = message.attachments unless message.attachments.nil?
 
       if reply_to = message['reply-to']
         options["ReplyTo"] = reply_to.to_s
@@ -147,6 +150,7 @@ module Postmark
         bcc
         subject
         tag
+        attachment
       ]
     end
 

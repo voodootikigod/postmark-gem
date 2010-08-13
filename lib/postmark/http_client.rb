@@ -1,5 +1,4 @@
 require 'cgi'
-
 module Postmark
   module HttpClient
     class << self
